@@ -82,7 +82,7 @@ production:
   primary: &primary_production
     <<: *default
     database: technical_diary_production
-    username: technical_diary
+    username: railsapps
     password: <%= ENV["TECHNICAL_DIARY_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
