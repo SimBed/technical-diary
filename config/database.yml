@@ -83,7 +83,7 @@ production:
     <<: *default
     database: technical_diary_production
     username: railsapps
-    password: <%= ENV["TECHNICAL_DIARY_DATABASE_PASSWORD"] %>
+    password: <%= Rails.application.credentials.dig(:production, :database_password) %>    
   cache:
     <<: *primary_production
     database: technical_diary_production_cache
