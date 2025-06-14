@@ -1,7 +1,8 @@
 ## Intention
-A diary to record all those wonderful things you have discovered and expect to know forever...  
-..except (if you are like me) will only have a very hazy memory of a few days (hours?) later unless you immediately document and save.  
-Enter **Technical Diary**. Think of it as an upside-down ToDo list (a ToDone list!)
+A diary to record all those wonderful things you have discovered and expect to recall forever...  
+..except (if like me) you will only have a very hazy memory of them a few days (hours?) later unless you immediately document, save and review them.  
+Enter **Technical Diary**. Think of it as an upside-down ToDo list (a ToDone list!)  
+<img src='public/technical-diary.png' style="max-width: 300px;">
 
 ## Rails commands
 These are the early Rails commands that gave this project first life: 

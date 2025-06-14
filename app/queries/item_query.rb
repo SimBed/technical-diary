@@ -6,8 +6,9 @@ class ItemQuery
     any_topic_of
   ].freeze
 
-  def initialize(session)
+  def initialize(session, records)
     @session = session
+    @records = records
   end
 
   def call
@@ -17,7 +18,7 @@ class ItemQuery
   private
 
   def scoped_items
-    relation = Item.all
+    relation = @records
 
     SIMPLE_SCOPES.each do |key|
       relation = relation.public_send(key) if filter_present?(key)

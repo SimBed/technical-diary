@@ -71,7 +71,7 @@ class ItemsController < ApplicationController
   private
 
   def handle_filter
-    @items = ItemQuery.new(session).call
+    @items = ItemQuery.new(session, @items).call
     # %w[any_topic_of].each do |key|
     #   @items = @items.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
     # end
@@ -87,7 +87,6 @@ class ItemsController < ApplicationController
 
   def handle_search
     return if session[:keyword].blank?
-
     @items = @items.keyword(session[:keyword])
   end
 
