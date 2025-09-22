@@ -1,8 +1,24 @@
 #!/usr/bin/env bash
 
-# backup timetstamped devellopment database (courtesy mybestfriend)
+# backup timetstamped database
+# Production:
+# $ export PGPASSWORD='<database password>'
+# $bin/backup_db technical_diary_production railsapps
+
+# Development:
+# $bin/backup_db technical_diary_development
 
 set -e #Exit immediately if a command exits with a non-zero status.
+
+DB_NAME=$1 # First arg = database name (required)
+DB_USER=$2 # Second arg = optional username (nil for development, railsapps for production)
+
+# If no argument is given, exit with message:
+# Usage: ./backup_db <database_name>
+if [ -z "$DB_NAME" ]; then
+  echo "Usage: $0 <database_name>"
+  exit 1
+fi
 
 # Define backup directory
 BACKUP_DIR="db/backups"
@@ -13,14 +29,22 @@ mkdir -p "$BACKUP_DIR"
 # Get current timestamp
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
-# Extract database name from config/database.yml (simple grep - adjust if needed)
-DB_NAME=$(grep "database:" config/database.yml | grep development | awk '{print $2}')
+# Priority: argument > RAILS_ENV > development
+# RAILS_ENV=${1:-${RAILS_ENV:-development}}
+# Extract database name for the chosen environment
+# DB_NAME=$(grep "database:" config/database.yml | grep "$RAILS_ENV" | awk '{print $2}')
 
 # Set backup file name
-BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.sql"
+BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.sql.gz"
 
-# Dump the database
+# Dump database and compress
 echo "Backing up database '$DB_NAME' to '$BACKUP_FILE'..."
-pg_dump "$DB_NAME" > "$BACKUP_FILE"
+if [ -n "$DB_USER" ]; then
+  # username provided
+  pg_dump -U "$DB_USER" "$DB_NAME" | gzip > "$BACKUP_FILE"
+else
+  # no username, let Postgres default to current Linux user
+  pg_dump "$DB_NAME" | gzip > "$BACKUP_FILE"
+fi
 
 echo "✅ Backup completed successfully."

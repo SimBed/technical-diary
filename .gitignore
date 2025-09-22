@@ -39,3 +39,4 @@
 /node_modules
 /.yarn/install-state.gz
 /db/backups/*
+/latest.dump
