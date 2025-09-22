@@ -16,10 +16,12 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
+    @date = Time.zone.today
     @form_cancel_link = items_path
   end
 
   def edit
+    @date = @item.date
     @form_cancel_link = items_path
   end
 
